@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeroCV — Ultimate Premium Resume Engine</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        premium: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            gold: '#C5A880',
+                            accent: '#6366f1',
+                            accentLight: '#818cf8',
+                            success: '#10b981'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Local Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-premium-50 text-premium-900 dark:bg-premium-900 dark:text-premium-100 min-h-screen flex flex-col antialiased selection:bg-premium-accent selection:text-white">
+
+    <!-- Floating Header Navigation -->
+    <header id="main-header" class="sticky top-0 z-50 transition-all duration-300 w-full border-b border-premium-200/50 dark:border-premium-800/50 glass-premium py-4 px-6 md:px-12 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-premium-accent to-premium-gold flex items-center justify-center text-white font-black text-xl tracking-wider shadow-lg shadow-premium-accent/20">
+                A
+            </div>
+            <div>
+                <span class="font-extrabold text-2xl tracking-tight bg-gradient-to-r from-premium-accent via-premium-gold to-premium-accent bg-clip-text text-transparent">AeroCV</span>
+                <span class="text-[10px] uppercase font-bold tracking-widest block text-premium-500 dark:text-premium-400">Premium Builder</span>
+            </div>
+        </div>
+
+        <!-- Main Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-1 bg-premium-100/60 dark:bg-premium-800/60 p-1.5 rounded-2xl border border-premium-200/30 dark:border-premium-700/30">
+            <button onclick="switchView('home')" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 bg-premium-accent text-white" data-target="home">
+                <i class="fa-solid fa-house mr-1.5"></i> Home
+            </button>
+            <button onclick="switchView('builder')" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold text-premium-600 dark:text-premium-300 hover:text-premium-900 dark:hover:text-white transition-all duration-300" data-target="builder">
+                <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Resume Builder
+            </button>
+            <button onclick="switchView('coverletter')" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold text-premium-600 dark:text-premium-300 hover:text-premium-900 dark:hover:text-white transition-all duration-300" data-target="coverletter">
+                <i class="fa-solid fa-file-pen mr-1.5"></i> Cover Letter
+            </button>
+            <button onclick="switchView('templates')" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold text-premium-600 dark:text-premium-300 hover:text-premium-900 dark:hover:text-white transition-all duration-300" data-target="templates">
+                <i class="fa-solid fa-palette mr-1.5"></i> Templates
+            </button>
+            <button onclick="switchView('tracker')" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold text-premium-600 dark:text-premium-300 hover:text-premium-900 dark:hover:text-white transition-all duration-300" data-target="tracker">
+                <i class="fa-solid fa-chart-column mr-1.5"></i> Job Tracker
+            </button>
+            <button onclick="switchView('about')" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold text-premium-600 dark:text-premium-300 hover:text-premium-900 dark:hover:text-white transition-all duration-300" data-target="about">
+                <i class="fa-solid fa-circle-info mr-1.5"></i> About
+            </button>
+            <button onclick="switchView('faq')" class="nav-tab px-4 py-2 rounded-xl text-sm font-semibold text-premium-600 dark:text-premium-300 hover:text-premium-900 dark:hover:text-white transition-all duration-300" data-target="faq">
+                <i class="fa-solid fa-circle-question mr-1.5"></i> FAQ
+            </button>
+        </nav>
+
+        <!-- Dynamic Interaction & Utility Buttons -->
+        <div class="flex items-center gap-3">
+            <!-- Theme Toggle -->
+            <button onclick="toggleDarkMode()" class="h-10 w-10 rounded-xl bg-premium-100 dark:bg-premium-800 border border-premium-200/50 dark:border-premium-700/50 flex items-center justify-center hover:bg-premium-200 dark:hover:bg-premium-700 transition-all duration-300" title="Toggle Theme">
+                <i id="theme-icon" class="fa-solid fa-moon text-premium-600 dark:text-premium-400"></i>
+            </button>
+
+            <!-- Gemini Key Setter -->
+            <button onclick="openGeminiKeyModal()" class="hidden md:flex items-center gap-2 px-3.5 py-2 bg-gradient-to-r from-teal-500 to-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-teal-500/10 hover:shadow-teal-500/30 transition-all duration-300">
+                <i class="fa-solid fa-brain"></i> Connect Gemini
+            </button>
+
+            <!-- Main Interactive CTA -->
+            <button onclick="switchView('builder')" class="hidden md:block px-5 py-2 bg-gradient-to-r from-premium-accent to-indigo-600 hover:from-indigo-600 hover:to-premium-accent text-white font-semibold text-sm rounded-xl shadow-lg shadow-premium-accent/15 transition-all duration-300">
+                Create Free Resume <i class="fa-solid fa-arrow-right ml-1.5"></i>
+            </button>
+
+            <!-- Mobile Hamburger Toggle -->
+            <button onclick="toggleMobileNav()" class="lg:hidden h-10 w-10 rounded-xl bg-premium-100 dark:bg-premium-800 flex items-center justify-center hover:bg-premium-200 dark:hover:bg-premium-700 transition-all duration-300">
+                <i id="mobile-nav-icon" class="fa-solid fa-bars text-premium-700 dark:text-premium-300"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-nav" class="hidden lg:hidden fixed top-[73px] inset-x-0 z-40 bg-premium-50/95 dark:bg-premium-900/95 backdrop-blur-xl border-b border-premium-200/50 dark:border-premium-800/50 p-6 flex flex-col gap-3 slide-up">
+        <button onclick="switchView('home'); toggleMobileNav();" class="flex items-center gap-3 p-3.5 rounded-xl hover:bg-premium-100 dark:hover:bg-premium-800 font-semibold text-sm">
+            <i class="fa-solid fa-house text-premium-accent"></i> Home
+        </button>
+        <button onclick="switchView('builder'); toggleMobileNav();" class="flex items-center gap-3 p-3.5 rounded-xl hover:bg-premium-100 dark:hover:bg-premium-800 font-semibold text-sm">
+            <i class="fa-solid fa-wand-magic-sparkles text-premium-accent"></i> Resume Builder
+        </button>
+        <button onclick="switchView('coverletter'); toggleMobileNav();" class="flex items-center gap-3 p-3.5 rounded-xl hover:bg-premium-100 dark:hover:bg-premium-800 font-semibold text-sm">
+            <i class="fa-solid fa-file-pen text-premium-accent"></i> Cover Letter
+        </button>
+        <button onclick="switchView('templates'); toggleMobileNav();" class="flex items-center gap-3 p-3.5 rounded-xl hover:bg-premium-100 dark:hover:bg-premium-800 font-semibold text-sm">
+            <i class="fa-solid fa-palette text-premium-accent"></i> Templates Catalogue
+        </button>
+        <button onclick="switchView('tracker'); toggleMobileNav();" class="flex items-center gap-3 p-3.5 rounded-xl hover:bg-premium-100 dark:hover:bg-premium-800 font-semibold text-sm">
+            <i class="fa-solid fa-chart-column text-premium-accent"></i> Job Search Tracker
+        </button>
+        <button onclick="switchView('about'); toggleMobileNav();" class="flex items-center gap-3 p-3.5 rounded-xl hover:bg-premium-100 dark:hover:bg-premium-800 font-semibold text-sm">
+            <i class="fa-solid fa-circle-info text-premium-accent"></i> About AeroCV
+        </button>
+        <button onclick="switchView('faq'); toggleMobileNav();" class="flex items-center gap-3 p-3.5 rounded-xl hover:bg-premium-100 dark:hover:bg-premium-800 font-semibold text-sm">
+            <i class="fa-solid fa-circle-question text-premium-accent"></i> FAQ & Support
+        </button>
+        <button onclick="openGeminiKeyModal(); toggleMobileNav();" class="mt-2 flex items-center justify-center gap-2 p-3.5 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-white font-bold text-sm">
+            <i class="fa-solid fa-brain"></i> Connect Gemini AI API Key
+        </button>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <main class="flex-grow">
+
+        <!-- VIEW 1: HOME PAGE -->
+        <section id="view-home" class="view-panel fade-in py-12 md:py-20 px-6 md:px-12 max-w-7xl mx-auto space-y-24">
+            
+            <!-- Hero Section -->
+            <div class="text-center max-w-4xl mx-auto space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-premium-accent/10 text-premium-accent dark:text-premium-accentLight rounded-full text-xs font-bold tracking-wide uppercase border border-premium-accent/20">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-premium-accent opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-premium-accent"></span>
+                    </span>
+                    Version 4.2: Real-time ATS Optimization Engine
+                </div>
+                
+                <h1 class="text-4xl md:text-7xl font-extrabold tracking-tight leading-none">
+                    Build a Resume that gets <br class="hidden md:block">
+                    <span class="bg-gradient-to-r from-premium-accent via-indigo-500 to-premium-gold bg-clip-text text-transparent">3x more interviews.</span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-premium-500 dark:text-premium-400 max-w-2xl mx-auto font-medium">
+                    Create beautiful, modern, and completely ATS-optimized resumes and cover letters with our high-end, responsive interactive builder. Built for builders like Aaditya Kandpal.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                    <button onclick="switchView('builder')" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-premium-accent to-indigo-600 hover:from-indigo-600 hover:to-premium-accent text-white font-bold rounded-2xl shadow-xl shadow-premium-accent/20 hover:scale-105 transition-all duration-300 text-base">
+                        <i class="fa-solid fa-magic-wand-sparkles mr-2"></i> Launch Resume Builder
+                    </button>
+                    <button onclick="scrollToElement('features-hub')" class="w-full sm:w-auto px-8 py-4 bg-white dark:bg-premium-800 hover:bg-premium-100 dark:hover:bg-premium-700 text-premium-800 dark:text-white font-semibold rounded-2xl border border-premium-200 dark:border-premium-700 hover:scale-105 transition-all duration-300 text-base">
+                        Explore Features
+                    </button>
+                </div>
+
+                <div class="pt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-premium-500 dark:text-premium-400">
+                    <span><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i> Free tier: Unlimited Exports</span>
+                    <span><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i> Clean templates: No watermark</span>
+                    <span><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i> GDPR & Privacy Compliant</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Live Preview Frame Mockup -->
+            <div class="relative max-w-5xl mx-auto rounded-3xl overflow-hidden border border-premium-200/60 dark:border-premium-800/60 shadow-2xl bg-white dark:bg-premium-950 p-4 hover-lift">
+                <div class="flex items-center justify-between border-b border-premium-100 dark:border-premium-800 pb-3 mb-4 text-xs font-semibold text-premium-500">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-red-400 inline-block"></span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-yellow-400 inline-block"></span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-green-400 inline-block"></span>
+                        <span class="ml-2 font-mono select-none">aerocv-engine-v4.config</span>
+                    </div>
+                    <span class="px-2.5 py-1 bg-premium-100 dark:bg-premium-800 rounded-lg"><i class="fa-solid fa-lock mr-1"></i> SSL Protected</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 min-h-[350px]">
+                    <!-- Left Sidebar Simulated Inputs -->
+                    <div class="md:col-span-5 bg-premium-50 dark:bg-premium-900 rounded-2xl p-5 border border-premium-200/50 dark:border-premium-800/50 flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <span class="text-[10px] uppercase font-bold text-premium-accent tracking-widest block">Interactive Live Preview</span>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold block text-premium-600 dark:text-premium-400">Primary Name</label>
+                                <input type="text" class="w-full px-3.5 py-2 rounded-xl text-sm border border-premium-200 dark:border-premium-700 bg-white dark:bg-premium-800 font-semibold" value="Aaditya Kandpal" disabled>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold block text-premium-600 dark:text-premium-400">Professional Summary</label>
+                                <textarea class="w-full px-3.5 py-2 rounded-xl text-sm border border-premium-200 dark:border-premium-700 bg-white dark:bg-premium-800 font-semibold h-16 resize-none" disabled>Passionate Solutions Architect specializing in cloud paradigms, custom reactive systems, and highly complex systems development.</textarea>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-premium-accent/5 rounded-xl border border-premium-accent/15 flex items-center gap-3">
+                            <div class="h-8 w-8 bg-premium-accent text-white flex items-center justify-center rounded-lg text-sm">
+                                <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-premium-accent">AI Optimizer Active</h4>
+                                <p class="text-[10px] text-premium-500">Real-time keyword scoring on the fly.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Simulated Canvas -->
+                    <div class="md:col-span-7 bg-premium-50 dark:bg-slate-900 rounded-2xl p-6 border border-premium-200/50 dark:border-premium-800/50 flex flex-col justify-between">
+                        <div class="border-b-2 border-premium-accent pb-3">
+                            <h2 class="text-xl font-extrabold tracking-tight">Aaditya Kandpal</h2>
+                            <p class="text-xs text-premium-accent uppercase font-bold tracking-wider mt-0.5">Senior Software Architect</p>
+                        </div>
+                        <div class="space-y-3 my-4">
+                            <p class="text-xs text-premium-500 leading-relaxed">Highly-motivated technologist and product architect. Led complex integrations yielding 45%+ reduction in latency. Fully equipped with modern web technologies, React, and automated testing setups.</p>
+                            <div class="flex flex-wrap gap-1.5 pt-1">
+                                <span class="px-2 py-0.5 bg-premium-200 dark:bg-premium-800 text-[10px] font-bold rounded-md">React / NextJS</span>
+                                <span class="px-2 py-0.5 bg-premium-200 dark:bg-premium-800 text-[10px] font-bold rounded-md">Node.js Enterprise</span>
+                                <span class="px-2 py-0.5 bg-premium-200 dark:bg-premium-800 text-[10px] font-bold rounded-md">AWS Devops</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between border-t border-premium-200/50 dark:border-premium-800/50 pt-3">
+                            <div class="text-[10px] text-premium-400 font-bold"><i class="fa-solid fa-location-dot"></i> India, New Delhi</div>
+                            <button onclick="switchView('builder')" class="px-3.5 py-1.5 bg-premium-accent text-white text-[11px] font-bold rounded-lg hover:bg-indigo-600 transition-all duration-300">
+                                Live Edit Aaditya's Resume
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Hub -->
+            <div id="features-hub" class="space-y-12">
+                <div class="text-center space-y-3">
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-premium-accent block">Uncompromising Quality</span>
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tight">The ultimate ecosystem for job hunters.</h2>
+                    <p class="text-premium-500 dark:text-premium-400 max-w-2xl mx-auto">Everything you need to successfully launch your career, track opportunities, and design professional collateral.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="p-8 bg-white dark:bg-premium-800/50 rounded-3xl border border-premium-200/60 dark:border-premium-800/60 hover-lift space-y-4">
+                        <div class="h-12 w-12 rounded-2xl bg-premium-accent/10 text-premium-accent flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-feather-pointed"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">1. Creative & Professional Templates</h3>
+                        <p class="text-premium-500 dark:text-premium-400 text-sm leading-relaxed">
+                            Access over 50+ hand-crafted, meticulously styled templates. Organized into Creative, Modern, Executive, compact, and first-job layouts to bypass HR gatekeeping.
+                        </p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="p-8 bg-white dark:bg-premium-800/50 rounded-3xl border border-premium-200/60 dark:border-premium-800/60 hover-lift space-y-4">
+                        <div class="h-12 w-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">2. Job & Pipe Tracker</h3>
+                        <p class="text-premium-500 dark:text-premium-400 text-sm leading-relaxed">
+                            Organize your pipelines dynamically. Store unique cover letters tailored specifically to individual openings, set follow-up reminders, and log interviews.
+                        </p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="p-8 bg-white dark:bg-premium-800/50 rounded-3xl border border-premium-200/60 dark:border-premium-800/60 hover-lift space-y-4">
+                        <div class="h-12 w-12 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">3. No-Watermark Free Tier</h3>
+                        <p class="text-premium-500 dark:text-premium-400 text-sm leading-relaxed">
+                            Unlike competitors who force heavy logos or restrict downloads, AeroCV believes in a developer-friendly, student-first approach. Unlimited beautiful resumes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust and Testimonials -->
+            <div class="bg-gradient-to-tr from-premium-100 to-premium-200/30 dark:from-premium-950 dark:to-premium-800/50 rounded-3xl p-8 md:p-12 border border-premium-200/50 dark:border-premium-800/50">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    <div class="md:col-span-5 space-y-4">
+                        <span class="text-xs font-extrabold uppercase tracking-widest text-premium-accent block">Rave Reviews</span>
+                        <h3 class="text-2xl md:text-4xl font-extrabold leading-tight">What recruiters and developers say.</h3>
+                        <p class="text-premium-500 dark:text-premium-400 text-sm">Join millions of modern professionals building their CV footprint with zero friction.</p>
+                        <div class="flex items-center gap-3">
+                            <div class="flex text-amber-400 text-xs">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="text-xs font-bold text-premium-600 dark:text-premium-400">4.9/5 from Over 220,000 Users</span>
+                        </div>
+                    </div>
+                    <div class="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-premium-900 p-6 rounded-2xl border border-premium-100 dark:border-premium-800 shadow-sm space-y-3">
+                            <p class="text-xs text-premium-500 italic">"I went from getting ghosted to getting 5 tech interviews in 2 weeks. The ATS scores are amazingly accurate and templates are top tier!"</p>
+                            <div class="flex items-center gap-2.5">
+                                <div class="h-8 w-8 rounded-full bg-gradient-to-tr from-premium-accent to-purple-400 text-white flex items-center justify-center font-bold text-xs">MK</div>
+                                <div>
+                                    <h4 class="text-xs font-bold">Mukesh Kumar</h4>
+                                    <span class="text-[10px] text-premium-400">Google SDE-II</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-premium-900 p-6 rounded-2xl border border-premium-100 dark:border-premium-800 shadow-sm space-y-3">
+                            <p class="text-xs text-premium-500 italic">"Clean layout customization and intuitive Kanban trackers. I love how cover letters matching the style sync perfectly."</p>
+                            <div class="flex items-center gap-2.5">
+                                <div class="h-8 w-8 rounded-full bg-gradient-to-tr from-premium-gold to-orange-400 text-white flex items-center justify-center font-bold text-xs">EM</div>
+                                <div>
+                                    <h4 class="text-xs font-bold">Elena Moretti</h4>
+                                    <span class="text-[10px] text-premium-400">Technical Recruiter</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- VIEW 2: RESUME BUILDER -->
+        <section id="view-builder" class="view-panel hidden fade-in py-8 px-4 md:px-10 max-w-[1600px] mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Left Hand Section: Interactive Fields Editor Form -->
+                <div class="lg:col-span-6 bg-white dark:bg-premium-800/30 border border-premium-200/50 dark:border-premium-800/50 rounded-3xl p-6 md:p-8 space-y-8 flex flex-col justify-between max-h-[85vh] overflow-y-auto">
+                    
+                    <!-- Inner Control Panel Switch -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between flex-wrap gap-4 border-b border-premium-200/40 dark:border-premium-800/40 pb-4">
+                            <div>
+                                <h2 class="text-2xl font-black tracking-tight">Design & Details</h2>
+                                <p class="text-xs text-premium-500">Live customization engine for Aaditya Kandpal & custom profiles</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="triggerResumeImport()" class="px-3 py-1.5 bg-premium-100 dark:bg-premium-800 hover:bg-premium-200 text-premium-800 dark:text-white rounded-lg text-xs font-bold transition-all duration-300">
+                                    <i class="fa-solid fa-file-import mr-1.5"></i> Import CV
+                                </button>
+                                <button onclick="resetBuilderToDefault()" class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-lg text-xs font-bold transition-all duration-300">
+                                    <i class="fa-solid fa-rotate-left mr-1.5"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Real-time design controllers -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-premium-50 dark:bg-premium-900/50 p-4 rounded-2xl border border-premium-200/40 dark:border-premium-800/40">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-premium-500 block">Template</label>
+                                <select id="builder-template-select" onchange="applyTemplateLayout()" class="w-full text-xs bg-white dark:bg-premium-800 border border-premium-200 dark:border-premium-700 p-2 rounded-lg font-bold">
+                                    <option value="modern">Modern Classic</option>
+                                    <option value="sidebar" selected>Executive Sidebar</option>
+                                    <option value="compact">Compact Minimal</option>
+                                    <option value="creative">Creative Pop</option>
+                                    <option value="technical">Technical Code-Styled</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-premium-500 block">Accent Color</label>
+                                <div class="flex items-center gap-1.5">
+                                    <input type="color" id="builder-accent-color" oninput="updateAccentColor(this.value)" class="w-8 h-8 rounded-lg cursor-pointer bg-transparent" value="#6366f1">
+                                    <span class="text-[11px] font-mono opacity-80" id="accent-hex-label">#6366f1</span>
+                                </div>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-premium-500 block">Primary Font</label>
+                                <select id="builder-font-select" onchange="updateBuilderFont(this.value)" class="w-full text-xs bg-white dark:bg-premium-800 border border-premium-200 dark:border-premium-700 p-2 rounded-lg font-bold">
+                                    <option value="font-sans">Inter (Sans)</option>
+                                    <option value="font-serif">Playfair (Serif)</option>
+                                    <option value="font-mono">Fira Code (Mono)</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold uppercase tracking-wider text-premium-500 block">Font Sizing</label>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="changeFontSize(-1)" class="w-7 h-7 bg-white dark:bg-premium-800 border border-premium-200 dark:border-premium-700 rounded-lg flex items-center justify-center text-xs font-black">-</button>
+                                    <span id="font-size-indicator" class="text-xs font-bold font-mono">13px</span>
+                                    <button onclick="changeFontSize(1)" class="w-7 h-7 bg-white dark:bg-premium-800 border border-premium-200 dark:border-premium-700 rounded-lg flex items-center justify-center text-xs font-black">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accordion/Tabs for sections editing -->
+                        <div class="flex gap-2 overflow-x-auto pb-2 border-b border-premium-200/20 dark:border-premium-800/20">
+                            <button onclick="switchEditorTab('personal')" class="editor-tab-btn px-3 py-1.5 bg-premium-accent text-white rounded-lg text-xs font-bold shrink-0" data-tab="personal">Personal Info</button>
+                            <button onclick="switchEditorTab('experience')" class="editor-tab-btn px-3 py-1.5 bg-premium-100 dark:bg-premium-800 text-premium-700 dark:text-premium-300 rounded-lg text-xs font-bold shrink-0" data-tab="experience">Experience</button>
+                            <button onclick="switchEditorTab('education')" class="editor-tab-btn px-3 py-1.5 bg-premium-100 dark:bg-premium-800 text-premium-700 dark:text-premium-300 rounded-lg text-xs font-bold shrink-0" data-tab="education">Education</button>
+                            <button onclick="switchEditorTab('skills')" class="editor-tab-btn px-3 py-1.5 bg-premium-100 dark:bg-premium-800 text-premium-700 dark:text-premium-300 rounded-lg text-xs font-bold shrink-0" data-tab="skills">Skills & Socials</button>
+                            <button onclick="switchEditorTab('custom')" class="editor-tab-btn px-3 py-1.5 bg-premium-100 dark:bg-premium-800 text-premium-700 dark:text-premium-300 rounded-lg text-xs font-bold shrink-0" data-tab="custom">Custom Projects</button>
+                        </div>
+
+                        <!-- Dynamic Tab Content Sections -->
+                        <div id="editor-tab-panels" class="space-y-6 pt-2">
+                            
+                            <!-- Tab: Personal -->
+                            <div id="panel-personal" class="editor-panel-section space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Full Name</label>
+                                        <input type="text" id="cv-name" onkeyup="syncResumePreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl" value="Aaditya Kandpal">
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Professional Title</label>
+                                        <input type="text" id="cv-title" onkeyup="syncResumePreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl" value="Senior Solutions Architect & SDE">
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Email Address</label>
+                                        <input type="email" id="cv-email" onkeyup="syncResumePreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl" value="aaditya.kandpal@gmail.com">
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Phone Number</label>
+                                        <input type="text" id="cv-phone" onkeyup="syncResumePreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl" value="+91 98765 43210">
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Location</label>
+                                        <input type="text" id="cv-location" onkeyup="syncResumePreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl" value="New Delhi, India">
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Website/Portfolio</label>
+                                        <input type="text" id="cv-website" onkeyup="syncResumePreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl" value="https://aadityakandpal.dev">
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex items-center justify-between">
+                                        <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Professional Summary</label>
+                                        <button onclick="aiOptimizeField('summary', 'cv-summary')" class="text-[10px] text-teal-600 dark:text-teal-400 hover:underline font-bold"><i class="fa-solid fa-brain mr-1"></i> AI Improve</button>
+                                    </div>
+                                    <textarea id="cv-summary" onkeyup="syncResumePreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl h-24 resize-none">Results-driven Cloud Architect and software engineer with 8+ years designing microservices paradigms and reactive Web engines. Adept at high performance system architectures and clean modern coding styles.</textarea>
+                                </div>
+                            </div>
+
+                            <!-- Tab: Experience List -->
+                            <div id="panel-experience" class="editor-panel-section hidden space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-xs font-bold uppercase tracking-widest text-premium-500">Employment Milestones</h3>
+                                    <button onclick="addExperienceRow()" class="px-2.5 py-1 bg-premium-accent text-white text-[10px] font-bold rounded-md hover:bg-indigo-600"><i class="fa-solid fa-plus mr-1"></i> Add Role</button>
+                                </div>
+                                <div id="experience-rows-container" class="space-y-4">
+                                    <!-- Dynamic rows loaded by JS -->
+                                </div>
+                            </div>
+
+                            <!-- Tab: Education List -->
+                            <div id="panel-education" class="editor-panel-section hidden space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-xs font-bold uppercase tracking-widest text-premium-500">Academic Profiles</h3>
+                                    <button onclick="addEducationRow()" class="px-2.5 py-1 bg-premium-accent text-white text-[10px] font-bold rounded-md hover:bg-indigo-600"><i class="fa-solid fa-plus mr-1"></i> Add Institution</button>
+                                </div>
+                                <div id="education-rows-container" class="space-y-4">
+                                    <!-- Dynamic rows loaded by JS -->
+                                </div>
+                            </div>
+
+                            <!-- Tab: Skills & Social Links -->
+                            <div id="panel-skills" class="editor-panel-section hidden space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Core Technical Skills (comma separated)</label>
+                                        <textarea id="cv-skills" onkeyup="syncResumePreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl h-20 resize-none">React, Next.js, Node.js, Webpack, Amazon Web Services, Docker, System Architecture, Performance Tuning, CI/CD Pipelines</textarea>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Certifications & Awards (comma separated)</label>
+                                        <textarea id="cv-certs" onkeyup="syncResumePreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl h-20 resize-none">AWS Certified Solutions Architect Pro, Google Cloud DevOps Expert, Hackathon First Place 2024</textarea>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-bold text-premium-600 dark:text-premium-400">GitHub Link</label>
+                                        <input type="text" id="cv-github" onkeyup="syncResumePreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl" value="https://github.com/aadityakandpal">
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-bold text-premium-600 dark:text-premium-400">LinkedIn Profile</label>
+                                        <input type="text" id="cv-linkedin" onkeyup="syncResumePreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl" value="https://linkedin.com/in/aadityakandpal">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab: Custom Projects -->
+                            <div id="panel-custom" class="editor-panel-section hidden space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-xs font-bold uppercase tracking-widest text-premium-500">Key Projects & Portfolios</h3>
+                                    <button onclick="addProjectRow()" class="px-2.5 py-1 bg-premium-accent text-white text-[10px] font-bold rounded-md hover:bg-indigo-600"><i class="fa-solid fa-plus mr-1"></i> Add Project</button>
+                                </div>
+                                <div id="project-rows-container" class="space-y-4">
+                                    <!-- Dynamic project sections populated dynamically by JS -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- AI Interactive Prompt Box -->
+                    <div class="mt-6 p-4 bg-teal-500/10 border border-teal-500/20 rounded-2xl flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl text-teal-500"><i class="fa-solid fa-brain animate-pulse"></i></span>
+                            <div>
+                                <h4 class="text-xs font-bold text-teal-700 dark:text-teal-400">Gemini ATS Optimizer</h4>
+                                <p class="text-[10px] text-premium-500">Connect API key or let local rewriter tailor summaries automatically.</p>
+                            </div>
+                        </div>
+                        <button onclick="triggerLocalSummaryOptimization()" class="px-3.5 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-xl text-xs font-bold shadow-lg shadow-teal-500/20 transition-all duration-300">
+                            Enhance Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Hand Section: Live Resume Preview Canvas -->
+                <div class="lg:col-span-6 flex flex-col items-center gap-4">
+                    
+                    <!-- Toolbar directly above preview pane -->
+                    <div class="w-full max-w-[21cm] flex items-center justify-between bg-white dark:bg-premium-800 p-3 rounded-2xl border border-premium-200/50 dark:border-premium-800/50">
+                        <div class="flex items-center gap-2">
+                            <span class="flex h-2.5 w-2.5 rounded-full bg-green-500"></span>
+                            <span class="text-xs font-bold opacity-80" id="preview-status-indicator">All changes synched</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="triggerPrintExport()" class="px-4 py-1.5 bg-gradient-to-tr from-premium-accent to-indigo-600 hover:from-indigo-600 hover:to-premium-accent text-white text-xs font-extrabold rounded-lg shadow-md transition-all duration-300">
+                                <i class="fa-solid fa-cloud-arrow-down mr-1.5"></i> Export Premium PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Authentic 21cm x 29.7cm (A4 Aspect Ratio) Rendered Canvas -->
+                    <div class="w-full max-w-[21cm] aspect-[1/1.414] bg-white text-slate-900 rounded-3xl shadow-xl border border-premium-200/60 p-[1.5cm] flex flex-col justify-between overflow-hidden relative fade-in" id="printable-canvas">
+                        <!-- Dynamic content injected in real-time by applyTemplateLayout() -->
+                        <div id="canvas-inner-content" class="w-full h-full flex flex-col justify-between text-xs font-sans">
+                            <!-- Real-time design content loading... -->
+                        </div>
+                    </div>
+
+                    <!-- Quick tips -->
+                    <p class="text-center text-[10px] text-premium-500 max-w-[21cm] px-4">
+                        💡 AeroCV uses high fidelity CSS printing logic. Choose "Save as PDF" on the system dialog, turn off "Headers and footers" and enable "Background graphics" to produce premium high-resolution resumes with zero margins.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VIEW 3: COVER LETTER BUILDER -->
+        <section id="view-coverletter" class="view-panel hidden fade-in py-8 px-4 md:px-10 max-w-[1500px] mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Left form creator -->
+                <div class="lg:col-span-5 bg-white dark:bg-premium-800/30 border border-premium-200/50 dark:border-premium-800/50 rounded-3xl p-6 md:p-8 space-y-6 max-h-[80vh] overflow-y-auto">
+                    <div>
+                        <h2 class="text-2xl font-black tracking-tight">Tailor Cover Letter</h2>
+                        <p class="text-xs text-premium-500">Design an identical cover letter with matched accenting styles.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Recipient Name</label>
+                                <input type="text" id="cl-recipient-name" onkeyup="syncCoverLetterPreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl" value="Hiring Manager">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Target Company</label>
+                                <input type="text" id="cl-recipient-company" onkeyup="syncCoverLetterPreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl" value="NextGen Tech Solutions">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Subject Line</label>
+                            <input type="text" id="cl-subject" onkeyup="syncCoverLetterPreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl" value="Application for Senior Solutions Architect Position">
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold text-premium-600 dark:text-premium-400">Cover Letter Body</label>
+                                <button onclick="aiOptimizeCoverLetter()" class="text-[10px] text-teal-600 dark:text-teal-400 hover:underline font-bold"><i class="fa-solid fa-brain mr-1"></i> AI Generate Letter</button>
+                            </div>
+                            <textarea id="cl-body" onkeyup="syncCoverLetterPreview()" class="w-full px-3 py-2 text-xs bg-premium-50 dark:bg-premium-900 border border-premium-200 dark:border-premium-700 rounded-xl h-64 resize-none leading-relaxed">Dear Hiring Manager,
+
+I am writing to express my strong interest in the Senior Solutions Architect role at NextGen Tech Solutions. With over eight years of hands-on software development and cloud architecting expertise, I am confident in my ability to immediately add value to your product engineering pipeline.
+
+In my previous roles, I successfully overhauled critical cloud infrastructure that scaled from hundreds to millions of active nodes with zero downtime, cutting operating costs by 30%. I bring direct experience with distributed technologies, AWS deployments, and reactive modern structures, allowing me to translate business requirements into state-of-the-art developer frameworks.
+
+Thank you for your time and consideration. I welcome the opportunity to discuss how my profile aligns perfectly with the strategic objectives of NextGen Tech Solutions.
+
+Sincerely,
+Aaditya Kandpal</textarea>
+                        </div>
+                    </div>
+
+                    <button onclick="triggerPrintExport()" class="w-full py-3.5 bg-gradient-to-tr from-premium-accent to-indigo-600 text-white font-bold rounded-2xl shadow-lg shadow-premium-accent/20">
+                        Export Matching Letter (PDF)
+                    </button>
+                </div>
+
+                <!-- Right preview letter canvas -->
+                <div class="lg:col-span-7 flex flex-col items-center">
+                    <div class="w-full max-w-[21cm] aspect-[1/1.414] bg-white text-slate-900 rounded-3xl shadow-xl border border-premium-200/60 p-[2cm] flex flex-col justify-between overflow-hidden" id="cover-letter-preview">
+                        <div class="space-y-8">
+                            <!-- Premium Header Block matching resume theme -->
+                            <div class="border-b-2 border-premium-accent pb-4 flex justify-between items-end">
+                                <div>
+                                    <h1 class="text-2xl font-black tracking-tight" id="cl-preview-sender">Aaditya Kandpal</h1>
+                                    <p class="text-xs text-premium-accent font-bold uppercase tracking-wider mt-0.5" id="cl-preview-title">Senior Solutions Architect & SDE</p>
+                                </div>
+                                <div class="text-[10px] text-right text-slate-500 space-y-0.5">
+                                    <p id="cl-preview-email">aaditya.kandpal@gmail.com</p>
+                                    <p id="cl-preview-phone">+91 98765 43210</p>
+                                    <p id="cl-preview-location">New Delhi, India</p>
+                                </div>
+                            </div>
+
+                            <!-- Body of Letter -->
+                            <div class="space-y-5 text-xs text-slate-800 leading-relaxed">
+                                <div class="space-y-1 font-semibold text-slate-600">
+                                    <p id="cl-preview-date">June 16, 2026</p>
+                                    <p id="cl-preview-recipient-meta">To: Hiring Manager at NextGen Tech Solutions</p>
+                                </div>
+
+                                <h3 class="font-bold text-sm text-slate-900" id="cl-preview-subject">Subject: Application for Senior Solutions Architect Position</h3>
+
+                                <div class="whitespace-pre-wrap" id="cl-preview-body">
+                                    Loading template...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer Sign off signature line -->
+                        <div class="border-t border-slate-100 pt-4 flex justify-between items-center text-[10px] text-slate-400">
+                            <span>AeroCV Styled Document</span>
+                            <span>Watermark-free</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VIEW 4: TEMPLATES CATALOGUE -->
+        <section id="view-templates" class="view-panel hidden fade-in py-12 px-6 md:px-12 max-w-7xl mx-auto space-y-12">
+            <div class="text-center space-y-3">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-premium-accent block">Design Center</span>
+                <h2 class="text-3xl md:text-5xl font-black tracking-tight">50+ Highly Specialized ATS Layouts</h2>
+                <p class="text-premium-500 dark:text-premium-400 max-w-2xl mx-auto">Click any curated design category to immediately load the engine with sample structures.</p>
+            </div>
+
+            <!-- Categories selector -->
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <button onclick="filterTemplates('all')" class="template-filter-btn px-4 py-2 bg-premium-accent text-white rounded-xl text-sm font-bold" data-filter="all">All Styles</button>
+                <button onclick="filterTemplates('modern')" class="template-filter-btn px-4 py-2 bg-premium-100 dark:bg-premium-800 hover:bg-premium-200 dark:hover:bg-premium-700 text-premium-800 dark:text-white rounded-xl text-sm font-bold" data-filter="modern">Modern Classic</button>
+                <button onclick="filterTemplates('creative')" class="template-filter-btn px-4 py-2 bg-premium-100 dark:bg-premium-800 hover:bg-premium-200 dark:hover:bg-premium-700 text-premium-800 dark:text-white rounded-xl text-sm font-bold" data-filter="creative">Creative & Colorful</button>
+                <button onclick="filterTemplates('compact')" class="template-filter-btn px-4 py-2 bg-premium-100 dark:bg-premium-800 hover:bg-premium-200 dark:hover:bg-premium-700 text-premium-800 dark:text-white rounded-xl text-sm font-bold" data-filter="compact">Compact Minimal</button>
+                <button onclick="filterTemplates('executive')" class="template-filter-btn px-4 py-2 bg-premium-100 dark:bg-premium-800 hover:bg-premium-200 dark:hover:bg-premium-700 text-premium-800 dark:text-white rounded-xl text-sm font-bold" data-filter="executive">Executive Sidebar</button>
+            </div>
+
+            <!-- Templates Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Template Card 1 -->
+                <div class="bg-white dark:bg-premium-800/40 border border-premium-200/50 dark:border-premium-800/50 rounded-3xl overflow-hidden shadow-sm hover-lift flex flex-col justify-between" data-category="executive">
+                    <div class="bg-premium-100 dark:bg-premium-900 aspect-[4/3] flex items-center justify-center p-6 border-b border-premium-200/30">
+                        <div class="w-3/4 h-[90%] bg-white text-slate-800 shadow-md p-4 rounded flex gap-3 text-[5px]">
+                            <div class="w-1/3 bg-slate-100 p-2 rounded flex flex-col justify-between">
+                                <div class="w-full h-4 bg-premium-accent rounded"></div>
+                                <div class="w-full h-1 bg-slate-300 rounded"></div>
+                                <div class="w-full h-1 bg-slate-300 rounded"></div>
+                            </div>
+                            <div class="w-2/3 space-y-2">
+                                <div class="w-3/4 h-3 bg-slate-300 rounded"></div>
+                                <div class="w-full h-8 bg-slate-200 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <h3 class="text-lg font-bold">Executive Sidebar Minimal</h3>
+                            <p class="text-xs text-premium-500">Dual-column layout with high density index spacing.</p>
+                        </div>
+                        <button onclick="selectTemplateFromCatalog('sidebar')" class="w-full py-2 bg-premium-accent text-white text-xs font-bold rounded-xl">Use This Layout</button>
+                    </div>
+                </div>
+
+                <!-- Template Card 2 -->
+                <div class="bg-white dark:bg-premium-800/40 border border-premium-200/50 dark:border-premium-800/50 rounded-3xl overflow-hidden shadow-sm hover-lift flex flex-col justify-between" data-category="modern">
+                    <div class="bg-premium-100 dark:bg-premium-900 aspect-[4/3] flex items-center justify-center p-6 border-b border-premium-200/30">
+                        <div class="w-3/4 h-[90%] bg-white text-slate-800 shadow-md p-4 rounded-lg space-y-3 text-[5px]">
+                            <div class="border-b border-indigo-200 pb-2 flex justify-between">
+                                <div class="w-1/2 h-3 bg-indigo-500 rounded"></div>
+                                <div class="w-1/4 h-2 bg-slate-200 rounded"></div>
+                            </div>
+                            <div class="w-full h-12 bg-slate-100 rounded"></div>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <h3 class="text-lg font-bold">Modern Classic</h3>
+                            <p class="text-xs text-premium-500">Elegant layout with center header, tailored for traditional firms.</p>
+                        </div>
+                        <button onclick="selectTemplateFromCatalog('modern')" class="w-full py-2 bg-premium-accent text-white text-xs font-bold rounded-xl">Use This Layout</button>
+                    </div>
+                </div>
+
+                <!-- Template Card 3 -->
+                <div class="bg-white dark:bg-premium-800/40 border border-premium-200/50 dark:border-premium-800/50 rounded-3xl overflow-hidden shadow-sm hover-lift flex flex-col justify-between" data-category="creative">
+                    <div class="bg-premium-100 dark:bg-premium-900 aspect-[4/3] flex items-center justify-center p-6 border-b border-premium-200/30">
+                        <div class="w-3/4 h-[90%] bg-white text-slate-800 shadow-md p-4 rounded-lg flex flex-col justify-between text-[5px]">
+                            <div class="w-full h-4 bg-gradient-to-r from-pink-500 to-rose-500 rounded"></div>
+                            <div class="grid grid-cols-2 gap-2 mt-2">
+                                <div class="w-full h-10 bg-slate-100 rounded"></div>
+                                <div class="w-full h-10 bg-slate-100 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <h3 class="text-lg font-bold">Creative Pop & Edge</h3>
+                            <p class="text-xs text-premium-500">High-visibility styling suited for design, UI/UX, and marketing roles.</p>
+                        </div>
+                        <button onclick="selectTemplateFromCatalog('creative')" class="w-full py-2 bg-premium-accent text-white text-xs font-bold rounded-xl">Use This Layout</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 5: JOB SEARCH TRACKER (KANBAN SYSTEM) -->
+        <section id="view-tracker" class="view-panel hidden fade-in py-8 px-4 md:px-10 max-w-[1600px] mx-auto space-y-8">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <div>
+                    <h2 class="text-3xl font-black tracking-tight">Active Opportunities</h2>
+                    <p class="text-xs text-premium-500">Organize applications, salaries, cover letter pairings, and next follow-up dates.</p>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <button onclick="openAddJobModal()" class="px-4 py-2 bg-premium-accent hover:bg-indigo-600 text-white text-sm font-bold rounded-xl shadow-lg shadow-premium-accent/15 transition-all duration-300">
+                        <i class="fa-solid fa-plus mr-1.5"></i> Add Job Posting
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tracker Analytics Ribbon -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="p-5 bg-white dark:bg-premium-800/40 rounded-2xl border border-premium-200/50 dark:border-premium-800/50 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase text-premium-500 tracking-wider">Total Active Jobs</span>
+                        <h4 id="tracker-stat-total" class="text-3xl font-black mt-1">5</h4>
+                    </div>
+                    <span class="text-2xl text-premium-accent"><i class="fa-solid fa-folder-open"></i></span>
+                </div>
+                <div class="p-5 bg-white dark:bg-premium-800/40 rounded-2xl border border-premium-200/50 dark:border-premium-800/50 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase text-premium-500 tracking-wider">In Interviews</span>
+                        <h4 id="tracker-stat-interviews" class="text-3xl font-black mt-1 text-amber-500">1</h4>
+                    </div>
+                    <span class="text-2xl text-amber-500"><i class="fa-solid fa-hourglass-half"></i></span>
+                </div>
+                <div class="p-5 bg-white dark:bg-premium-800/40 rounded-2xl border border-premium-200/50 dark:border-premium-800/50 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase text-premium-500 tracking-wider">Offers Received</span>
+                        <h4 id="tracker-stat-offers" class="text-3xl font-black mt-1 text-emerald-500">1</h4>
+                    </div>
+                    <span class="text-2xl text-emerald-500"><i class="fa-solid fa-trophy"></i></span>
+                </div>
+                <div class="p-5 bg-white dark:bg-premium-800/40 rounded-2xl border border-premium-200/50 dark:border-premium-800/50 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase text-premium-500 tracking-wider">Success Rate</span>
+                        <h4 id="tracker-stat-success-rate" class="text-3xl font-black mt-1 text-teal-500">20%</h4>
+                    </div>
+                    <span class="text-2xl text-teal-500"><i class="fa-solid fa-chart-pie"></i></span>
+                </div>
+            </div>
+
+            <!-- Kanban Grid Board Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                <!-- Column 1: Wishlist -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between border-b-2 border-premium-500 pb-2">
+                        <h3 class="text-sm font-black uppercase text-premium-500"><i class="fa-solid fa-star mr-1"></i> Wishlist</h3>
+                        <span id="badge-wishlist" class="px-2 py-0.5 bg-premium-100 dark:bg-premium-800 text-xs font-bold rounded-lg">2</span>
+                    </div>
+                    <div id="col-wishlist" class="space-y-3 min-h-[300px]">
+                        <!-- Dynamic Job Cards injected by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Column 2: Applied -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between border-b-2 border-indigo-500 pb-2">
+                        <h3 class="text-sm font-black uppercase text-indigo-500"><i class="fa-solid fa-paper-plane mr-1"></i> Applied</h3>
+                        <span id="badge-applied" class="px-2 py-0.5 bg-premium-100 dark:bg-premium-800 text-xs font-bold rounded-lg">1</span>
+                    </div>
+                    <div id="col-applied" class="space-y-3 min-h-[300px]">
+                        <!-- Dynamic Job Cards injected by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Column 3: Interviewing -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between border-b-2 border-amber-500 pb-2">
+                        <h3 class="text-sm font-black uppercase text-amber-500"><i class="fa-solid fa-comments mr-1"></i> Interview</h3>
+                        <span id="badge-interview" class="px-2 py-0.5 bg-premium-100 dark:bg-premium-800 text-xs font-bold rounded-lg">1</span>
+                    </div>
+                    <div id="col-interview" class="space-y-3 min-h-[300px]">
+                        <!-- Dynamic Job Cards injected by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Column 4: Offer Made -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between border-b-2 border-emerald-500 pb-2">
+                        <h3 class="text-sm font-black uppercase text-emerald-500"><i class="fa-solid fa-circle-check mr-1"></i> Offers</h3>
+                        <span id="badge-offer" class="px-2 py-0.5 bg-premium-100 dark:bg-premium-800 text-xs font-bold rounded-lg">1</span>
+                    </div>
+                    <div id="col-offer" class="space-y-3 min-h-[300px]">
+                        <!-- Dynamic Job Cards injected by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Column 5: Closed/Rejected -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between border-b-2 border-red-500 pb-2">
+                        <h3 class="text-sm font-black uppercase text-red-500"><i class="fa-solid fa-circle-xmark mr-1"></i> Rejected</h3>
+                        <span id="badge-rejected" class="px-2 py-0.5 bg-premium-100 dark:bg-premium-800 text-xs font-bold rounded-lg">0</span>
+                    </div>
+                    <div id="col-rejected" class="space-y-3 min-h-[300px]">
+                        <!-- Dynamic Job Cards injected by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 6: ABOUT PAGE -->
+        <section id="view-about" class="view-panel hidden fade-in py-12 px-6 md:px-12 max-w-5xl mx-auto space-y-12">
+            <div class="text-center space-y-4">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-premium-accent block">Our Mission</span>
+                <h2 class="text-3xl md:text-5xl font-black tracking-tight">The Story Behind AeroCV</h2>
+                <p class="text-premium-500 dark:text-premium-400 max-w-2xl mx-auto">We believe high-fidelity resumes shouldn't be blocked behind expensive recurring paywalls.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold">Why Aaditya Kandpal started AeroCV</h3>
+                    <p class="text-sm text-premium-500 leading-relaxed">
+                        AeroCV was born out of frustration with current online cv creation engines. Most builders charge heavy premiums, overlay heavy non-removable watermarks, and offer rigid single-column structures.
+                    </p>
+                    <p class="text-sm text-premium-500 leading-relaxed">
+                        Our platform is different. It provides real-time, zero-lag dynamic custom previews, matched cover letter alignments, premium light and dark themes, and completely unified job pipeline analytics on a secure local platform.
+                    </p>
+                </div>
+                <div class="bg-gradient-to-tr from-premium-accent to-purple-500 p-8 rounded-3xl text-white space-y-4 shadow-xl shadow-premium-accent/10">
+                    <h3 class="text-xl font-extrabold">The AeroCV Manifesto:</h3>
+                    <ul class="space-y-2 text-xs opacity-90">
+                        <li><i class="fa-solid fa-check mr-2"></i> No annoying watermarks EVER on default outputs.</li>
+                        <li><i class="fa-solid fa-check mr-2"></i> GDPR Compliant: User data is saved directly in browser session.</li>
+                        <li><i class="fa-solid fa-check mr-2"></i> Seamless PDF and custom printing options.</li>
+                        <li><i class="fa-solid fa-check mr-2"></i> Built-in Gemini AI integration.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 7: FAQ ACCORDIONS -->
+        <section id="view-faq" class="view-panel hidden fade-in py-12 px-6 md:px-12 max-w-4xl mx-auto space-y-8">
+            <div class="text-center space-y-3">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-premium-accent block">Help Center</span>
+                <h2 class="text-3xl font-black tracking-tight">Frequently Answered Queries</h2>
+                <p class="text-premium-500 dark:text-premium-400">Everything you need to know about the AeroCV builder.</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Accordion 1 -->
+                <div class="bg-white dark:bg-premium-800/40 border border-premium-200/50 dark:border-premium-800/50 rounded-2xl overflow-hidden">
+                    <button onclick="toggleAccordion('faq-1')" class="w-full p-5 text-left font-bold text-sm md:text-base flex justify-between items-center bg-premium-100/20 dark:bg-premium-800/20">
+                        <span>Is Aaditya Kandpal's default resume premium layout fully customizable?</span>
+                        <i id="faq-1-icon" class="fa-solid fa-chevron-down text-premium-500 transition-transform"></i>
+                    </button>
+                    <div id="faq-1" class="hidden p-5 border-t border-premium-200/40 dark:border-premium-800/40 text-xs md:text-sm text-premium-500 leading-relaxed">
+                        Absolutely. The template default comes populated with Aaditya Kandpal's custom software architect configuration. You can instantly modify the names, projects, employment milestones, or import external files to build your own custom look.
+                    </div>
+                </div>
+
+                <!-- Accordion 2 -->
+                <div class="bg-white dark:bg-premium-800/40 border border-premium-200/50 dark:border-premium-800/50 rounded-2xl overflow-hidden">
+                    <button onclick="toggleAccordion('faq-2')" class="w-full p-5 text-left font-bold text-sm md:text-base flex justify-between items-center bg-premium-100/20 dark:bg-premium-800/20">
+                        <span>How does the Gemini AI Resume optimization work?</span>
+                        <i id="faq-2-icon" class="fa-solid fa-chevron-down text-premium-500 transition-transform"></i>
+                    </button>
+                    <div id="faq-2" class="hidden p-5 border-t border-premium-200/40 dark:border-premium-800/40 text-xs md:text-sm text-premium-500 leading-relaxed">
+                        If you connect your Gemini API Key in the top menu, AeroCV calls the `gemini-3-flash-preview` model directly. It passes your current text block and requests specialized ATS keyword injection, action verb enhancement, and readability analysis in real time. If you do not have a key, a highly efficient local simulated generator handles it offline.
+                    </div>
+                </div>
+
+                <!-- Accordion 3 -->
+                <div class="bg-white dark:bg-premium-800/40 border border-premium-200/50 dark:border-premium-800/50 rounded-2xl overflow-hidden">
+                    <button onclick="toggleAccordion('faq-3')" class="w-full p-5 text-left font-bold text-sm md:text-base flex justify-between items-center bg-premium-100/20 dark:bg-premium-800/20">
+                        <span>Are my resumes truly watermark-free?</span>
+                        <i id="faq-3-icon" class="fa-solid fa-chevron-down text-premium-500 transition-transform"></i>
+                    </button>
+                    <div id="faq-3" class="hidden p-5 border-t border-premium-200/40 dark:border-premium-800/40 text-xs md:text-sm text-premium-500 leading-relaxed">
+                        Yes! Every resume or cover letter generated on AeroCV is fully branded with professional formatting and does not contain annoying third-party logos or branding. It is optimized to lock in recruiter attention.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-premium-200/50 dark:border-premium-800/50 py-12 px-6 md:px-12 bg-premium-100/30 dark:bg-premium-950/50 mt-12">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-lg bg-premium-accent flex items-center justify-center text-white font-extrabold text-base shadow-md">
+                        A
+                    </div>
+                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-premium-accent to-premium-gold bg-clip-text text-transparent">AeroCV</span>
+                </div>
+                <p class="text-xs text-premium-500 leading-relaxed">
+                    AeroCV is a high-performance modern solution built by developers, for developers, designed to bypass clunky recruiter tools with ultimate aesthetics.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider mb-3">Builder Tools</h4>
+                <ul class="space-y-2 text-xs text-premium-500">
+                    <li><button onclick="switchView('builder')" class="hover:underline text-left">Resume Builder Engine</button></li>
+                    <li><button onclick="switchView('coverletter')" class="hover:underline text-left">Matching Cover Letter Creator</button></li>
+                    <li><button onclick="switchView('templates')" class="hover:underline text-left">50+ Creative Templates Catalog</button></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider mb-3">Job Management</h4>
+                <ul class="space-y-2 text-xs text-premium-500">
+                    <li><button onclick="switchView('tracker')" class="hover:underline text-left">Interactive Kanban Tracker</button></li>
+                    <li><button onclick="switchView('faq')" class="hover:underline text-left">Privacy & HIPAA/GDPR Compliance</button></li>
+                </ul>
+            </div>
+            <div class="space-y-3">
+                <h4 class="text-xs font-bold uppercase tracking-wider">Aaditya Kandpal Edition</h4>
+                <p class="text-xs text-premium-500 leading-relaxed">
+                    Designed to reflect the high standards of Aaditya Kandpal, Senior software and cloud solutions specialist.
+                </p>
+                <div class="flex items-center gap-3 text-lg text-premium-600 dark:text-premium-400">
+                    <a href="#" class="hover:text-premium-accent"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="hover:text-premium-accent"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" class="hover:text-premium-accent"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto border-t border-premium-200/50 dark:border-premium-800/50 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between text-[11px] text-premium-500 gap-4">
+            <p>&copy; 2026 AeroCV Engine Corp. Engineered for excellence.</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:underline">Privacy Charter</a>
+                <a href="#" class="hover:underline">Terms of Performance</a>
+                <a href="#" class="hover:underline">Security Protocols</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: GEMINI API KEY CONFIGURATION -->
+    <div id="gemini-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white dark:bg-premium-800 w-full max-w-md rounded-3xl border border-premium-200/50 dark:border-premium-800/50 shadow-2xl p-6 md:p-8 space-y-6 fade-in">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl text-teal-500"><i class="fa-solid fa-brain"></i></span>
+                    <div>
+                        <h3 class="text-lg font-black">Connect Gemini API</h3>
+                        <p class="text-[10px] text-premium-500">Powers advanced keyword analysis and auto-optimization.</p>
+                    </div>
+                </div>
+                <button onclick="closeGeminiKeyModal()" class="text-premium-400 hover:text-premium-900 dark:hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="space-y-4 text-xs">
+                <p class="text-premium-500 leading-relaxed">
+                    By providing your custom Gemini API key, AeroCV makes secure, direct queries to the model `gemini-3-flash-preview` to improve professional bullet points, draft matching cover letters, and score ATS compliance.
+                </p>
+                <div class="space-y-1">
+                    <label class="font-bold">Gemini API Key</label>
+                    <input type="password" id="gemini-key-input" class="w-full px-3 py-2 border border-premium-200 dark:border-premium-700 bg-premium-50 dark:bg-premium-900 rounded-xl" placeholder="AIzaSy...">
+                </div>
+                <p class="text-[10px] text-premium-400 italic">
+                    Note: Your key is saved locally in your own browser's sessionStorage. We never upload or share keys to any backend systems.
+                </p>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="closeGeminiKeyModal()" class="w-1/2 py-2 bg-premium-100 dark:bg-premium-800 hover:bg-premium-200 rounded-xl font-bold text-xs text-premium-700 dark:text-white">Cancel</button>
+                <button onclick="saveGeminiApiKey()" class="w-1/2 py-2 bg-teal-500 hover:bg-teal-600 rounded-xl font-bold text-xs text-white">Save Connection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ADD JOB OPPORTUNITY MODAL -->
+    <div id="add-job-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white dark:bg-premium-800 w-full max-w-lg rounded-3xl border border-premium-200/50 dark:border-premium-800/50 shadow-2xl p-6 md:p-8 space-y-6 fade-in">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-lg font-black">Add Job Tracking Card</h3>
+                    <p class="text-xs text-premium-500">Capture interview details, salary estimates, and cover letter pairings.</p>
+                </div>
+                <button onclick="closeAddJobModal()" class="text-premium-400 hover:text-premium-900 dark:hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="space-y-1">
+                    <label class="font-bold">Target Title / Role</label>
+                    <input type="text" id="job-title-input" class="w-full px-3 py-2 border border-premium-200 dark:border-premium-700 bg-premium-50 dark:bg-premium-900 rounded-xl" placeholder="e.g. Lead SDE Architect">
+                </div>
+                <div class="space-y-1">
+                    <label class="font-bold">Target Company Name</label>
+                    <input type="text" id="job-company-input" class="w-full px-3 py-2 border border-premium-200 dark:border-premium-700 bg-premium-50 dark:bg-premium-900 rounded-xl" placeholder="e.g. Acme Cloud Corp">
+                </div>
+                <div class="space-y-1">
+                    <label class="font-bold">Estimated Salary</label>
+                    <input type="text" id="job-salary-input" class="w-full px-3 py-2 border border-premium-200 dark:border-premium-700 bg-premium-50 dark:bg-premium-900 rounded-xl" placeholder="e.g. $140,000 / year">
+                </div>
+                <div class="space-y-1">
+                    <label class="font-bold">Tracking Column Status</label>
+                    <select id="job-status-input" class="w-full px-3 py-2 border border-premium-200 dark:border-premium-700 bg-premium-50 dark:bg-premium-900 rounded-xl">
+                        <option value="wishlist">Wishlist / Backlog</option>
+                        <option value="applied">Applied / Pending Response</option>
+                        <option value="interview">Active Interviewing</option>
+                        <option value="offer">Offer Extended</option>
+                        <option value="rejected">Rejected / Closed</option>
+                    </select>
+                </div>
+                <div class="space-y-1 md:col-span-2">
+                    <label class="font-bold">Next Follow-Up / Reminder Date</label>
+                    <input type="date" id="job-date-input" class="w-full px-3 py-2 border border-premium-200 dark:border-premium-700 bg-premium-50 dark:bg-premium-900 rounded-xl">
+                </div>
+                <div class="space-y-1 md:col-span-2">
+                    <label class="font-bold">Private Interview Notes / Salary Negotiations</label>
+                    <textarea id="job-notes-input" class="w-full px-3 py-2 border border-premium-200 dark:border-premium-700 bg-premium-50 dark:bg-premium-900 rounded-xl h-20 resize-none" placeholder="Enter custom interview requirements or target skills..."></textarea>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="closeAddJobModal()" class="w-1/2 py-2 bg-premium-100 dark:bg-premium-800 hover:bg-premium-200 rounded-xl font-bold text-xs text-premium-700 dark:text-white">Cancel</button>
+                <button onclick="saveJobCard()" class="w-1/2 py-2 bg-premium-accent hover:bg-indigo-600 rounded-xl font-bold text-xs text-white">Add Card to Board</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: IMPORT CV SIMULATOR MODAL -->
+    <div id="import-cv-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white dark:bg-premium-800 w-full max-w-md rounded-3xl border border-premium-200/50 dark:border-premium-800/50 shadow-2xl p-6 md:p-8 space-y-6 fade-in">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-2 text-premium-accent">
+                    <span class="text-xl"><i class="fa-solid fa-file-import"></i></span>
+                    <h3 class="text-lg font-black">Import Existing Resume</h3>
+                </div>
+                <button onclick="closeResumeImportModal()" class="text-premium-400 hover:text-premium-900 dark:hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="space-y-4 text-xs">
+                <p class="text-premium-500 leading-relaxed">
+                    AeroCV features a simulated neural parsing engine. Drag and drop any PDF, DOCX, or screenshot image of your resume below to analyze and extract information structure.
+                </p>
+
+                <div class="border-2 border-dashed border-premium-200 dark:border-premium-700 hover:border-premium-accent rounded-2xl p-8 text-center cursor-pointer transition-colors" id="import-drop-zone">
+                    <span class="text-3xl text-premium-400 block mb-2"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                    <p class="font-bold">Choose file or drag here</p>
+                    <p class="text-[10px] text-premium-400 mt-1">Supports PDF, DOCX, PNG, JPG (Max 10MB)</p>
+                    <input type="file" id="cv-file-input" class="hidden" onchange="handleCVFileSelected(event)">
+                </div>
+
+                <div id="parse-loading-spinner" class="hidden flex flex-col items-center justify-center p-4 gap-2 text-premium-accent">
+                    <i class="fa-solid fa-spinner animate-spin text-2xl"></i>
+                    <p class="font-mono text-[10px] animate-pulse">Running neural structural parser...</p>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="closeResumeImportModal()" class="w-full py-2 bg-premium-100 dark:bg-premium-800 hover:bg-premium-200 rounded-xl font-bold text-xs text-premium-700 dark:text-white">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js" defer></script>
+</body>
+</html>
